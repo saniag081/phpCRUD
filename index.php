@@ -11,7 +11,23 @@
     // devolver array 
     $rest = $gsent-> fetchAll();
 
-    var_dump($rest);
+    //var_dump($rest);
+
+    //agregar
+    if($_POST){
+
+        $colores = $_POST['color'];
+        $decripcion = $_POST['descripcion'];
+
+        $insertar = 'INSERT INTO color (color,descriccion) VALUES (?,?)';//sentencia sql
+
+        $sentenica_agregar = $mbd -> prepare($insertar);
+        $sentenica_agregar -> execute(array($colores,$decripcion));
+
+        //redireccion
+        header('location:index.php');
+    }
+
 ?>
 
   <!DOCTYPE html>
@@ -26,24 +42,39 @@
     </head>
     <body>
 
-        <div class="container">
-
-            <?php  
-            // recorer array inicio
-                foreach ($rest as $data):
-            ?>
-
-            <divc class="card-panel <?php echo $data['color'] ?>">
+        <div class="container section">
+            <div class="row section container">
+            <div class="col s6">
+                <div>
+                    <?php  
+                        // recorer array inicio
+                         foreach ($rest as $data):
+                    ?>
+                <divc class="card-panel <?php echo $data['color'] ?>">
             
-                <?php echo $data['color'] ?>
-                -
-                <?php echo $data['descriccion'] ?>
+                    <?php echo $data['color'] ?>
+                    -
+                    <?php echo $data['descriccion'] ?>
 
+                </div>
+
+                <?php endforeach; ?>
+
+                </div>
             </div>
 
-            <?php endforeach; ?>
+                <div class="col s6">
+                <div class="container">
+                        <form class="container section" method="POST">
+                            <h2>Agregar elementos</h2>
+                            <input type="text" name="color" placeholder="color">
+                            <input type="text" name="descripcion" placeholder="descripcion">
+                            <button class="btn">agregar</button>                        
+                        </form>
+                </div>                
+                </div>
 
-
+            </div>
         </div>
 
     </body>
