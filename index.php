@@ -28,6 +28,20 @@
         header('location:index.php');
     }
 
+if($_GET){
+
+    $id_unico = $_GET['id'];
+    $leer_unico = 'SELECT * FROM color WHERE id=?';//sentencia SQL
+
+    //guardar conexion
+    $gsent_unico = $mbd -> prepare($leer_unico);
+    $gsent_unico -> execute(array($id_unico));
+    $rest_unico = $gsent_unico->fetch();
+
+    //var_dump($rest_unico);
+}
+
+
 ?>
 
   <!DOCTYPE html>
@@ -50,7 +64,11 @@
                         // recorer array inicio
                          foreach ($rest as $data):
                     ?>
-                <divc class="card-panel <?php echo $data['color'] ?>">
+                <div class="card-panel <?php echo $data['color'] ?>">
+                            <!-- agregar id a la url-->
+                <a href="index.php?id=<?php echo $data['id'] ?>">            
+                    <i class="material-icons">border_color</i>
+                </a>
             
                     <?php echo $data['color'] ?>
                     -
@@ -65,18 +83,36 @@
 
                 <div class="col s6">
                 <div class="container">
+                        <?php if(! $_GET): ?>
                         <form class="container section" method="POST">
                             <h2>Agregar elementos</h2>
                             <input type="text" name="color" placeholder="color">
                             <input type="text" name="descripcion" placeholder="descripcion">
                             <button class="btn">agregar</button>                        
                         </form>
-                </div>                
-                </div>
+                        <?php endif ?>
+                </div>  
 
+                            <!--editar elemento-->
+                <div class="container">
+                      <?php if( $_GET): ?>
+                        <form class="container section" method="GET" action="editar.php">
+                            <h2>editar elementos</h2>
+
+                            <input type="text" name="color" value=" <?php echo $rest_unico['color']  ?> ">
+
+                            <input type="text" name="descripcion" placeholder="descripcion" 
+                            value=" <?php echo $rest_unico['descriccion']  ?> ">
+                            <!--oculto-->
+                            <input type="hidden" value="<?php echo $rest_unico['id'] ?>" name="id">
+                            <button class="btn">editar</button>                        
+                        </form>
+                        <?php endif ?>
+                </div>               
             </div>
+
+        </div>
         </div>
 
     </body>
   </html>
-        
