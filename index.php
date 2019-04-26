@@ -24,6 +24,10 @@
         $sentenica_agregar = $mbd -> prepare($insertar);
         $sentenica_agregar -> execute(array($colores,$decripcion));
 
+        //cerrar conexion
+        $mbd = null;
+        $sentenica_agregar = null;
+
         //redireccion
         header('location:index.php');
     }
@@ -37,6 +41,10 @@ if($_GET){
     $gsent_unico = $mbd -> prepare($leer_unico);
     $gsent_unico -> execute(array($id_unico));
     $rest_unico = $gsent_unico->fetch();
+
+    //cerrar conecion
+    $mbd = null;
+    $gsent_unico = null;
 
     //var_dump($rest_unico);
 }
@@ -68,6 +76,10 @@ if($_GET){
                             <!-- agregar id a la url-->
                 <a href="index.php?id=<?php echo $data['id'] ?>">            
                     <i class="material-icons">border_color</i>
+                </a>
+                        
+                <a href="eliminar.php?id=<?php echo $data['id'] ?>">
+                    <i class="material-icons">delete</i>
                 </a>
             
                     <?php echo $data['color'] ?>
@@ -116,3 +128,11 @@ if($_GET){
 
     </body>
   </html>
+        
+<?php 
+
+//cerrar conexion
+$mbd = null;
+$gsent = null;
+
+?>

@@ -19,4 +19,7 @@ $sentencia_editar = $mbd ->prepare($editar);
                             
 $sentencia_editar -> execute(array($color,$descripcion,$id));
 
+$mbd = null;
+$sentencia_editar = null;
+
 header('location:index.php');
